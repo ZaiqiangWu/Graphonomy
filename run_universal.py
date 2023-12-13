@@ -32,6 +32,7 @@ def main():
     img = read_img(img_path)
     inputs = img_transform(img, composed_transforms)['image']
     inputs = inputs.unsqueeze(0)
+    print(inputs.shape)
 
 
     if dataset_lbl == 0:
