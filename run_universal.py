@@ -31,6 +31,7 @@ def main():
     img_path='./ichao_input.jpg'
     img = read_img(img_path)
     inputs = img_transform(img, composed_transforms)['image']
+    inputs = inputs.unsqueeze(0)
 
 
     if dataset_lbl == 0:
