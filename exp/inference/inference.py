@@ -163,7 +163,7 @@ def inference(net, img_path='', output_path='./', output_name='f', use_gpu=True)
     results = predictions.cpu().numpy()
     vis_res = decode_labels(results)
 
-    parsing_im = Image.fromarray(vis_res[0])
+    parsing_im = Image.fromarray(vis_res[1])
     parsing_im.save(output_path+'/{}.png'.format(output_name))
     cv2.imwrite(output_path+'/{}_gray.png'.format(output_name), results[0, :, :])
 
