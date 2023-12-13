@@ -107,7 +107,7 @@ def inference(net, img_path='', output_path='./', output_name='f', use_gpu=True)
     adj1_test = adj3_.unsqueeze(0).unsqueeze(0).expand(1, 1, 20, 20).cuda()
 
     # multi-scale
-    scale_list = [1, ]#0.5, 0.75, 1.25, 1.5, 1.75]
+    scale_list = [1, 0.5, 0.75, 1.25, 1.5, 1.75]
     img = read_img(img_path)
     testloader_list = []
     testloader_flip_list = []
