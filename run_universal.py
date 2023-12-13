@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 from torchvision import transforms
 from dataloaders import custom_transforms as tr
+import cv2
 
 label_colours = [(0,0,0)
                 , (128,0,0), (255,0,0), (0,85,0), (170,0,51), (255,85,0), (0,0,85), (0,119,221), (85,85,0), (0,85,85), (85,51,0), (52,86,128), (0,128,0)
@@ -61,6 +62,15 @@ def main():
                                     adj4_middle=adj4, adj5_transfer_s2m=adj5.transpose(2, 3),
                                     adj6_transfer_t2m=adj6.transpose(2, 3), adj5_transfer_m2s=adj5,
                                     adj6_transfer_m2t=adj6, )
+    outputs_final = outputs.clone()
+    ################ plot pic
+    predictions = torch.max(outputs_final, 1)[1]
+    results = predictions.cpu().numpy()
+    vis_res = decode_labels(results)
+
+    parsing_im = Image.fromarray(vis_res[0])
+    parsing_im.save('universal.png')
+    cv2.imwrite('universal_gray.png', results[0, :, :])
 
 
 
