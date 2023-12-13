@@ -30,7 +30,7 @@ def main():
         tr.Normalize_xception_tf_only_img(),
         tr.ToTensor_only_img()])
 
-    dataset_lbl=2
+    dataset_lbl=0
     img_path='./ichao_input.jpg'
     img = read_img(img_path)
     inputs = img_transform(img, composed_transforms)['image']
