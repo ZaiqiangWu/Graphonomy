@@ -19,6 +19,7 @@ def main():
     net.load_state_dict_new(x)
     print('load pretrainedModel.')
     net.eval()
+    net=net.cuda()
     # Get graphs
     train_graph, test_graph = get_graphs()
     adj1, adj2, adj3, adj4, adj5, adj6 = train_graph
