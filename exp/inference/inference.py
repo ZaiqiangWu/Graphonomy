@@ -97,14 +97,14 @@ def inference(net, img_path='', output_path='./', output_name='f', use_gpu=True)
     '''
     # adj
     adj2_ = torch.from_numpy(graph.cihp2pascal_nlp_adj).float()
-    adj2_test = adj2_.unsqueeze(0).unsqueeze(0).expand(1, 1, 7, 20).cuda().transpose(2, 3)
+    adj2_test = adj2_.unsqueeze(0).unsqueeze(0).expand(1, 1, 7, 20).cuda().transpose(2, 3) # transfer
 
     adj1_ = Variable(torch.from_numpy(graph.preprocess_adj(graph.pascal_graph)).float())
-    adj3_test = adj1_.unsqueeze(0).unsqueeze(0).expand(1, 1, 7, 7).cuda()
+    adj3_test = adj1_.unsqueeze(0).unsqueeze(0).expand(1, 1, 7, 7).cuda() #source
 
     cihp_adj = graph.preprocess_adj(graph.cihp_graph)
     adj3_ = Variable(torch.from_numpy(cihp_adj).float())
-    adj1_test = adj3_.unsqueeze(0).unsqueeze(0).expand(1, 1, 20, 20).cuda()
+    adj1_test = adj3_.unsqueeze(0).unsqueeze(0).expand(1, 1, 20, 20).cuda() #target
 
     # multi-scale
     scale_list = [1, 0.5, 0.75, 1.25, 1.5, 1.75]
