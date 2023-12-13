@@ -18,6 +18,7 @@ def main():
     x = torch.load(ckpt)
     net.load_state_dict_new(x)
     print('load pretrainedModel.')
+    net.eval()
     # Get graphs
     train_graph, test_graph = get_graphs()
     adj1, adj2, adj3, adj4, adj5, adj6 = train_graph
@@ -37,7 +38,8 @@ def main():
 
     if dataset_lbl == 0:
         # 0 is cihp -- target
-        _, outputs, _ = net.forward(None, input_target=inputs, input_middle=None, adj1_target=adj1, adj2_source=adj2,
+        with torch.no_grad():
+            _, outputs, _ = net.forward(None, input_target=inputs, input_middle=None, adj1_target=adj1, adj2_source=adj2,
                                     adj3_transfer_s2t=adj3, adj3_transfer_t2s=adj3.transpose(2, 3), adj4_middle=adj4,
                                     adj5_transfer_s2m=adj5.transpose(2, 3),
                                     adj6_transfer_t2m=adj6.transpose(2, 3), adj5_transfer_m2s=adj5,
