@@ -7,7 +7,7 @@ def main():
                                                                   hidden_layers=128,
                                                                   source_classes=7,
                                                                   middle_classes=18, )
-    ckpt = './universal.pth'
+    ckpt = './universal_trained.pth'
     x = torch.load(ckpt)
     net.load_state_dict_new(x)
     print('load pretrainedModel.')
