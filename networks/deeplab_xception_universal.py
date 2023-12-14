@@ -735,16 +735,16 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
         source_x = F.interpolate(source_x, size=img_size, mode='bilinear', align_corners=True)
         return source_x
 
-    def intermediate2atr(self,,intermediate,img_size):
+    def intermediate2atr(self,intermediate,img_size):
         source_graph, target_graph, middle_graph, x = intermediate
         middle_x = self.bottom_forward_middle(x, source_graph)
         middle_x = F.interpolate(middle_x, size=img_size, mode='bilinear', align_corners=True)
         return middle_x
 
-    def intermediate2cihp(self,,intermediate,img_size):
+    def intermediate2cihp(self,intermediate,img_size):
         source_graph, target_graph, middle_graph, x = intermediate
         target_x = self.bottom_forward_target(x, target_graph)
-        target_x = F.interpolate(target_x, size=input.size()[2:], mode='bilinear', align_corners=True)
+        target_x = F.interpolate(target_x, size=img_size, mode='bilinear', align_corners=True)
         return target_x
 
 
