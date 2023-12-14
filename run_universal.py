@@ -37,32 +37,15 @@ def main():
     inputs = inputs.unsqueeze(0).cuda()
     print(inputs.shape)
 
-
-    if dataset_lbl == 0:
-        # 0 is cihp -- target
-        with torch.no_grad():
-            _, outputs, _ = net.forward(None, input_target=inputs, input_middle=None, adj1_target=adj1, adj2_source=adj2,
+    with torch.no_grad():
+        intermediate = net.forward_intermediate(inputs, adj1_target=adj1, adj2_source=adj2,
                                     adj3_transfer_s2t=adj3, adj3_transfer_t2s=adj3.transpose(2, 3), adj4_middle=adj4,
                                     adj5_transfer_s2m=adj5.transpose(2, 3),
                                     adj6_transfer_t2m=adj6.transpose(2, 3), adj5_transfer_m2s=adj5,
                                     adj6_transfer_m2t=adj6, )
-    elif dataset_lbl == 1:
-        # pascal is source
-        outputs, _, _ = net.forward(inputs, input_target=None, input_middle=None, adj1_target=adj1,
-                                    adj2_source=adj2,
-                                    adj3_transfer_s2t=adj3, adj3_transfer_t2s=adj3.transpose(2, 3),
-                                    adj4_middle=adj4, adj5_transfer_s2m=adj5.transpose(2, 3),
-                                    adj6_transfer_t2m=adj6.transpose(2, 3), adj5_transfer_m2s=adj5,
-                                    adj6_transfer_m2t=adj6, )
-    else:
-        # atr
-        _, _, outputs = net.forward(None, input_target=None, input_middle=inputs, adj1_target=adj1,
-                                    adj2_source=adj2,
-                                    adj3_transfer_s2t=adj3, adj3_transfer_t2s=adj3.transpose(2, 3),
-                                    adj4_middle=adj4, adj5_transfer_s2m=adj5.transpose(2, 3),
-                                    adj6_transfer_t2m=adj6.transpose(2, 3), adj5_transfer_m2s=adj5,
-                                    adj6_transfer_m2t=adj6, )
-    outputs_final = outputs.clone()
+        pascal_result = net.intermediate2pascal(intermediate,inputs.shape[2:])
+
+    outputs_final = pascal_result.clone()
     ################ plot pic
     predictions = torch.max(outputs_final, 1)[1]
     results = predictions.cpu().numpy()

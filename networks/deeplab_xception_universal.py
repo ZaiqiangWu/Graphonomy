@@ -673,6 +673,7 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
             target_x = self.bottom_forward_target(x, target_graph)
 
             target_x = F.upsample(target_x, size=input.size()[2:], mode='bilinear', align_corners=True)
+            #target_x = F.interpolate(target_x, size=input.size()[2:], mode='bilinear', align_corners=True)
             return None, target_x, None
 
         if input_source is not None and input_target is None and input_middle is None:
@@ -712,6 +713,40 @@ class deeplab_xception_end2end_3d(deeplab_xception_transfer_basemodel_savememory
             middle_x = self.bottom_forward_middle(x, source_graph)
             middle_x = F.upsample(middle_x, size=input.size()[2:], mode='bilinear', align_corners=True)
             return None, None, middle_x
+
+    def forward_intermediate(self, input, adj1_target=None, adj2_source=None,
+                adj3_transfer_s2t=None, adj3_transfer_t2s=None, adj4_middle=None,adj5_transfer_s2m=None,
+                adj6_transfer_t2m=None,adj5_transfer_m2s=None,adj6_transfer_m2t=None,):
+
+
+        source_graph, target_graph, middle_graph, x = self.top_forward(input, adj1_target=adj1_target, adj2_source=adj2_source,
+                                                             adj3_transfer_s2t=adj3_transfer_s2t,
+                                                             adj3_transfer_t2s=adj3_transfer_t2s,
+                                                           adj4_middle=adj4_middle,
+                                                           adj5_transfer_s2m=adj5_transfer_s2m,
+                                                           adj6_transfer_t2m=adj6_transfer_t2m,
+                                                           adj5_transfer_m2s=adj5_transfer_m2s,
+                                                           adj6_transfer_m2t=adj6_transfer_m2t)
+        return [source_graph, target_graph, middle_graph, x]
+
+    def intermediate2pascal(self,intermediate,img_size):
+        source_graph, target_graph, middle_graph, x = intermediate
+        source_x = self.bottom_forward_source(x, source_graph)
+        source_x = F.interpolate(source_x, size=img_size, mode='bilinear', align_corners=True)
+        return source_x
+
+    def intermediate2atr(self,,intermediate,img_size):
+        source_graph, target_graph, middle_graph, x = intermediate
+        middle_x = self.bottom_forward_middle(x, source_graph)
+        middle_x = F.interpolate(middle_x, size=img_size, mode='bilinear', align_corners=True)
+        return middle_x
+
+    def intermediate2cihp(self,,intermediate,img_size):
+        source_graph, target_graph, middle_graph, x = intermediate
+        target_x = self.bottom_forward_target(x, target_graph)
+        target_x = F.interpolate(target_x, size=input.size()[2:], mode='bilinear', align_corners=True)
+        return target_x
+
 
 
 class deeplab_xception_end2end_3d_synbn(deeplab_xception_transfer_basemodel_savememory_synbn):
