@@ -1,2 +1,2 @@
-python exp/inference/inference.py --loadmodel ./inference.pth --img_path ./img/jin.png --output_path ./img/ --output_name /jin_output
+python exp/inference/inference.py --loadmodel ./inference.pth --img_path ./img/resized_00067_img.jpg --output_path ./img/ --output_name /00067
 #python exp/inference/inference.py --loadmodel ./universal_trained.pth --img_path ./ichao_input.jpg --output_path ./img/ --output_name /output_file_name
